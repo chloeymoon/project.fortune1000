@@ -1,7 +1,6 @@
 library(shinydashboard)
 # https://appsilon.com/create-outstanding-dashboards-with-the-new-semantic-dashboard-package/
 library(semantic.dashboard)
-#library(shinythemes)
 
 
 shinyUI(dashboardPage(
@@ -14,7 +13,6 @@ shinyUI(dashboardPage(
   
   # sidebar
   dashboardSidebar(
-    # sidebarUserPanel("",image = ""),
     sidebarMenu(
       menuItem("Overview", tabName = "overview", icon = icon("angle down")),
       menuItem("Sector", tabName = "sector", icon = icon("industry")),
@@ -29,12 +27,13 @@ shinyUI(dashboardPage(
   # body
   dashboardBody(
     tabItems(
+      
       tabItem(tabName="overview",
               fluidRow(h2("Fortune 1000 Companies and Female CEOs")),
               br(),br(),br(),
-              fluidRow(HTML("Objectives: different types of visualizations")),
-              HTML("<p>&nbsp&nbsp&nbsp&nbspe.g. bar charts, maps, boxplots, pie charts, infoboxes, valueboxes, tabs, radio buttons, date range</p>"),
-              fluidRow(h4(" - Data: Kaggle Fortune 1000 (Title, Industry, Profit, Location..) + some manual labor (CEO date)")),
+              fluidRow(HTML("Objective: different types of visualizations")),
+              HTML("<p>&nbsp&nbsp&nbsp&nbspe.g. select boxes, bar charts, maps, boxplots, pie charts, infoboxes, valueboxes, tabs, radio buttons, date range</p>"),
+              fluidRow(h4(" - Data: 2018 Fortune 1000 (Kaggle) + some manual labor (CEO date, gender)")),
               fluidRow(h4(" - Gender: library(gender) based on first name")),
               fluidRow(h4(" - Location: Leaflet, markers & states (polygons)")),
               fluidRow(h4(" - Stock: quantmod, ticker matching (nasdaq.csv, stockSymbols() from stringr)")),
@@ -67,13 +66,9 @@ shinyUI(dashboardPage(
                     list(menu="State: Barchart", 
                          content=fluidRow(selectizeInput("state", "",c("All States",sort(states.unique))),
                                           valueBoxOutput('state.count'),
-                                          plotOutput('state.barchart')
-                         ))
+                                          plotOutput('state.barchart')))
                     )
                 )
-              ),
-              fluidRow(
-                
               )
       ),
 
@@ -107,7 +102,6 @@ shinyUI(dashboardPage(
                        plotOutput('stock',height="300px",width="90%"),br(),
                        plotOutput('stock2',height="300px",width="90%"))
               )
-              
       ),
       
       tabItem(tabName="conclusion",

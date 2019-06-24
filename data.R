@@ -50,7 +50,6 @@ get.ticker <- function(name){
 f1000 <- f1000 %>% mutate(ticker=sapply(enc2utf8(as.character(title)),get.ticker))
 
 # writing 
-#setwd("~/Documents/NYCDSA/shiny_project")
 write.csv(f1000, file = "f1000.csv")
 
 

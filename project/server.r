@@ -1,3 +1,4 @@
+# packages and libraries
 library(googleVis)
 library(ggplot2)
 #install.packages('leaflet')
@@ -11,7 +12,6 @@ library(leaflet)
 shinyServer(function(input, output){
 
   #### visualizations
-  # Infographics comparing overall vs. Female ceos
   output$trend <- renderPlot(
     ceo.trend %>% 
       ggplot(aes(x=year)) +
@@ -28,6 +28,7 @@ shinyServer(function(input, output){
   
   # by sectors
   output$bysector <- renderPlot( #input$sec
+    # if all sectors selected
     if(input$sec=='All Sectors'){
       ggplot(wo.na,aes(x=Sector)) + 
         geom_bar(aes(fill=CEO.gender)) + 
@@ -37,6 +38,7 @@ shinyServer(function(input, output){
         theme(axis.text.y=element_text(size=14,face = "bold"),
               axis.title.y=element_blank())
     } else {
+      # by sectors
         d.bysector() %>%
         count() %>%
         ggplot(aes(x=CEO.gender,y=n,fill=CEO.gender)) + 
@@ -48,15 +50,17 @@ shinyServer(function(input, output){
     }
   )
   
+  # filtered data
   d.bysector <- reactive({
     wo.na %>%
       filter(Sector==input$sec) %>% 
       group_by(CEO.gender)
   })
 
-  
+  # pie chart by sector
   output$pie.sector <- renderPlot(
     if(input$sec!='All Sectors'){
+      # if a sector selected
       count.bygender() %>% 
         arrange(desc(n)) %>%
         ggplot(aes(x="", y=n, fill=CEO.gender)) +
@@ -87,6 +91,7 @@ shinyServer(function(input, output){
     }
   })
   
+  # rendering count values by gender 
   male.count <- reactive({
     a <- count.bygender()
     a$n[a$CEO.gender=='male']
@@ -116,9 +121,7 @@ shinyServer(function(input, output){
             size="small",width=1)
   })
   
-  # by sector - pi chart
-  
-  # financials (revenue $ profits)
+  # financials (revenues and profits)
   output$financials.box <- renderPlot(
     d %>% filter(!is.na(CEO.gender)) %>%
       ggplot(aes(x=CEO.gender,y=get(input$radio))) + 
@@ -126,8 +129,6 @@ shinyServer(function(input, output){
       coord_cartesian(ylim=c(0,ifelse(input$radio=="Revenues...M.",30000,3100)))
   )
   
-
-
   # by location
   output$map <- renderLeaflet(
     leaflet(d) %>%
@@ -144,7 +145,6 @@ shinyServer(function(input, output){
   )
   
 
-  
   # by state -- chloropleth
   output$states <- renderLeaflet(
     leaflet(d) %>%
@@ -172,11 +172,12 @@ shinyServer(function(input, output){
                 title = "Count (All)", opacity=1)
     )
   
-  ### 
+  ### reactive -- filtered by state
   d.bystate <- reactive({
     d %>% filter(State==input$state&!is.na(State)) %>% group_by(CEO.gender)
   })
   
+  # barchart by state
   output$state.barchart <- renderPlot(
     if(input$state=='All States'){
       wo.na %>% 
@@ -199,13 +200,6 @@ shinyServer(function(input, output){
               axis.text.x=element_text(size=12,face = "bold"))
     }
   )
-  
-  
-  # #### Observe event
-  # observeEvent(input$Map_shape_click, { # update the location selectInput on map clicks
-  #   p <- input$Map_shape_click
-  #   print(p)
-  # })
   
   state.prop <- reactive({
     t <- d.bystate() %>% filter(!is.na(CEO.gender)) %>% count()
@@ -246,7 +240,7 @@ shinyServer(function(input, output){
     stock.plot(input$selected.comp2,input$stock.dates2,input$log2)
   )
   
-  # data
+  # data table rendering
   output$table <- renderDataTable({
     datatable(disp, rownames=FALSE) %>%
       formatStyle('CEO.gender', target="row", 

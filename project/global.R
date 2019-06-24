@@ -1,10 +1,12 @@
+# libraries
 library(DT)
 library(shiny)
 library(dplyr)
 library(tigris)
 library(leaflet)
 
-rm(list=ls())
+#removing environment
+#rm(list=ls())
 par(mar=c(1,1,1,1))
 
 # color palettes
@@ -12,12 +14,11 @@ par(mar=c(1,1,1,1))
 library(wesanderson)
 
 #data
-#setwd("~/Documents/NYCDSA")
 d <- read.csv('f1000.csv', stringsAsFactors=FALSE)
 female <- read.csv('Female_2018_Fortune500.csv', stringsAsFactors=FALSE)
 
 #what to display
-d.utf8 <- read.csv('f1000.csv', encoding="UTF-8", stringsAsFactors=FALSE)
+d.utf8 <- read.csv('f1000.csv', encoding="UTF-8", stringsAsFactors=FALSE) #encoded
 disp = d.utf8 %>% select(rank, title, CEO, CEO.gender, Sector, Industry, City, State)
 
 #cleaning (revenue and profits as numeric)
@@ -27,7 +28,7 @@ d$Profits...M. <- as.numeric(gsub('[$,]', '', d$Profits...M.))
 #themes
 #install.packages("semantic.dashboard")
 
-#dropdowns
+#dropdowns vectors
 sectors <- levels(d$Sector)
 states.unique <- unique(d$State)
 
@@ -48,8 +49,7 @@ wo.na %>%
   arrange(n) -> o
 secorder = o$Sector
 
-
-# maps
+# for maps legends
 title.ceo <- paste0('<strong>',d$title,'</strong><br>CEO: ',d$CEO)
 
 #states
@@ -64,19 +64,17 @@ d.merged <- subset(d.merged, !is.na(total))
 d.popup <- paste(d.merged$NAME," (",as.character(d.merged$total),")",sep="")
 
 library('quantmod')
-library('plotly')
+#library('plotly')
 #stock
 comp.titles <- d$title
 fem.titles <-d$title[d$CEO.gender=='female'&!is.na(d$CEO.gender)]
 #comp.titles
-start_date <- as.Date("2017-01-02")
-end_date <- as.Date("2019-06-22")
 
 stock.plot <- function(input,date,log){
   symbol <- getSymbols(d$ticker[d$title==input], src = "yahoo", env=.GlobalEnv,
                        from = date[1], to = date[2])
   return(chartSeries(get(symbol),log.scale = log,
-                     show.grid = FALSE,type="line", #get(symbol)
+                     show.grid = FALSE,type="line",
                      theme = chartTheme("white",up.col='navy'),name=symbol))
 }
 
