@@ -18,40 +18,30 @@ shinyUI(dashboardPage(
     # sidebarUserPanel("",image = ""),
     sidebarMenu(
       menuItem("Overview", tabName = "overview", icon = icon("angle down")),
-   #   menuItem("Facts & Trends", tabName = "facts", icon = icon("check")),
       menuItem("Sector", tabName = "sector", icon = icon("industry")),
       menuItem("Location", tabName = "location", icon = icon("compass")),
       menuItem("Financials", tabName = "financials", icon = icon("money")),
-     # menuItem("Case Study", tabName = "case", icon = icon("venus")),
       menuItem("Stock", tabName = "stock", icon = icon("chart line")),
+      menuItem("Conclusion", tabName = "conclusion", icon = icon("check")),
       menuItem("Data", tabName = "data", icon = icon("table"))
     )
   ),
-  
-  # by.sector <- function(){
-  #   return(fluidRow(
-  #       column(3, box(h3("Choose a sector"),
-  #                     selectizeInput("sec", "",rev(secorder)),
-  #                     plotOutput("bysector"))),
-  #       column(3,box(infoBoxOutput('male.count'),
-  #                 infoBoxOutput('female.count')))
-  #   ))},
   
 
   # body
   dashboardBody(
     tabItems(
       tabItem(tabName="overview",
-              fluidRow(h4("Share of Female CEOs and Board Members (%)")),
-              fluidRow(plotOutput('trend',width="400px",height="250px"))
+              fluidRow(h2("Fortune 1000 Companies and Female CEOs")),
+              fluidRow(h4(" - Data: Kaggle Fortune 1000 companies, manual labor (CEO date)")),
+              fluidRow(h4(" - Gender: library(gender) based on first name")),
+              fluidRow(h4(" - Location: Leaflet, markers & states (polygons)")),
+              fluidRow(h4(" - Stock: quantmod, ticker matching (nasdaq.csv, stockSymbols() from stringr)")),
+              fluidRow(h4(" - UI: Semantic Dashboard"))
       ),
-      # tabItem(tabName="facts", br(),
-      #         box(h3("Share of Female CEOs and Board Members (%)"),br(),
-      #             fluidRow(plotOutput('trend')),width=9)
-      # ),
       
       tabItem(tabName="sector",
-              fluidRow(h2("Fortune 1000 Companies by Sector & CEO Gender")),
+              fluidRow(h2("Fortune 1000 Companies by Sector & CEO Gender"),width="80%"),
               fluidRow(
                 column(10, h3("Choose a sector"),
                        selectizeInput("sec", "",c("All Sectors",rev(secorder))),
@@ -59,36 +49,40 @@ shinyUI(dashboardPage(
                 column(6, br(),br(),
                        infoBoxOutput('male.count'), br(),
                        infoBoxOutput('female.count'), 
-                       plotOutput('pie.sector'))
+                       plotOutput('pie.sector')),
+                width="80%"
               )
       ),
-      
-      tags$style("#male.count {width:10px;}"),
-      
+
       tabItem(tabName="location",
               fluidRow(h2("Fortune 1000 Companies by Location & CEO Gender")),
               fluidRow(
                 tab_box(
-                #  title = "", ribbon=FALSE, title_side="top",
-                  id = "location",  width=14,
+                  title = NULL,
+                  id = "location",  width=16,
                   tabs=list(
-                    list(menu="Location",content=leafletOutput('map')),
-                    list(menu="States", content=leafletOutput('states'))
-                  )
+                    list(menu="Map",content=leafletOutput('map')),
+                    list(menu="State: Map", content=leafletOutput('states')),
+                    list(menu="State: Barchart", 
+                         content=fluidRow(selectizeInput("state", "",c("All States",sort(states.unique))),
+                                          valueBoxOutput('state.count'),
+                                          plotOutput('state.barchart')
+                         ))
+                    )
                 )
               ),
               fluidRow(
                 
               )
       ),
-      tabItem(tabName="financials",
-              fluidRow(
-                radioButtons("radio", label = "",
-                             choices = list("Revenue" = "Revenues...M.", "Profit" = "Profits...M."), 
-                             selected = "Revenues...M."),
-                plotOutput('financials.box',width="70%")
-              )
-      ),
+      # tabItem(tabName="financials",
+      #         fluidRow(
+      #           radioButtons("radio", label = "",
+      #                        choices = list("Revenue" = "Revenues...M.", "Profit" = "Profits...M."), 
+      #                        selected = "Revenues...M."),
+      #           plotOutput('financials.box',width="70%")
+      #         )
+      # ),
 
       tabItem(tabName="stock",
               fluidRow(h2("Stock Prices Comparison")),
@@ -97,6 +91,7 @@ shinyUI(dashboardPage(
                        box(
                          title=NULL, 
                          h4("Choose a company owned by a female CEO"),
+                         h4(textOutput('fem.ceo.date')),
                          selectizeInput(inputId="selected.comp",label=NULL,
                                         choices=fem.titles, selected = NULL, multiple = FALSE),
                          dateRangeInput("stock.dates", label = ("Date range"),
@@ -121,6 +116,21 @@ shinyUI(dashboardPage(
               )
               
       ),
+      
+      tabItem(tabName="conclusion",
+              box(
+                fluidRow(h4("Profit and Revenue by CEO gender (%)")),
+                fluidRow(radioButtons("radio", label = "",
+                                      choices = list("Revenue" = "Revenues...M.", "Profit" = "Profits...M."),
+                                      selected = "Revenues...M.", inline=TRUE),width=16),
+                fluidRow(plotOutput('financials.box',width="400px"))
+              ),
+              box(
+                fluidRow(h4("Share of Female CEOs and Board Members (%)")),
+                fluidRow(plotOutput('trend',width="400px",height="250px"))
+              )
+      ),
+      
       tabItem(tabName = "data",
               fluidRow(h1("Data")),
               fluidRow(box(DT::dataTableOutput("table"), width = 15)))

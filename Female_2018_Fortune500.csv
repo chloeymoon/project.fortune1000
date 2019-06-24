@@ -1,26 +1,26 @@
-Name,Company,Year
-Mary Barra,General Motors,2014
-Gail Boudreaux,Anthem,2017
-Ginni Rometty,IBM,2012
-Indra Nooyi,PepsiCo,2006
-Marilyn Hewson,Lockheed Martin,2013
-Safra Catz,Oracle,2014
-Phebe Novakovic,General Dynamics,2013
-Tricia Griffith,Progressive Corporation,2016
-Lynn Good,Duke Energy,2013
-Michelle Gass,Kohl's,2018
-Geisha Williams,Pacific Gas and Electric Company,2017
-Margaret Keane,Synchrony Financial,2014
-Barbara Rentler,Ross Stores,2014
-Beth Ford,Land O'Lakes,2018
-Vicki Hollub,Occidental Petroleum,2016
-Anna Manning,Reinsurance Group of America,2017
-Deanna Mulligan,Guardian Life Insurance Company of America,2011
-Kathryn Marinello,Hertz Global Holdings,2017
-Mary Laschinger,Veritiv,2014
-Michele Buck,Hershey,2017
-Joey Wat,Yum China Holdings,2018
-Beth Mooney,KeyCorp,2011
-Patti Poppe,CMS Energy,2016
-Kathleen Mazzarella,Graybar Electric,2013
-Mary Dillon,Ulta Beauty,2014
+Name,Company,Year,Date,Ticker
+Mary Barra,General Motors,2014,2014-01-05,GM
+Gail Boudreaux,Anthem,2017,2017-11-20,ANTM
+Virginia Rometty,IBM,2012,2012-01-01,IBM
+Indra Nooyi,PepsiCo,2006,2006-07-01,PEP
+Marilyn Hewson,Lockheed Martin,2013,2013-01-01,LMT
+Safra Catz,Oracle,2014,2014-09-18,ORCL
+Phebe Novakovic,General Dynamics,2013,2013-01-01,GD
+Tricia Griffith,Progressive Corporation,2016,2016-07-01,PGR
+Lynn Good,Duke Energy,2013,2013-07-01,CHK
+Michelle Gass,Kohl's,2018,2018-05-16,KSS
+Geisha Williams,Pacific Gas and Electric Company,2017,2017-03-01,PCG
+Margaret Keane,Synchrony Financial,2014,2014-02-01,SYF
+Barbara Rentler,Ross Stores,2014,2014-05-07,ROST
+Beth Ford,Land O'Lakes,2018,2018-08-01,
+Vicki Hollub,Occidental Petroleum,2016,2016-04-01,OXY
+Anna Manning,Reinsurance Group of America,2017,2017-01-01,RGA
+Deanna Mulligan,Guardian Life Insurance Company of America,2011,2011-07-01,
+Kathryn Marinello,Hertz Global Holdings,2017,2017-01-03,HRI
+Mary Laschinger,Veritiv,2014,2014-07-01,VRTV
+Michele Buck,Hershey,2017,2017-03-01,HSY
+Joey Wat,Yum China Holdings,2018,2018-03-01,YUMC
+Beth Mooney,KeyCorp,2011,2011-05-01,KEY
+Patti Poppe,CMS Energy,2016,2016-07-01,CMS
+Kathleen Mazzarella,Graybar Electric,2013,2012-06-01,
+Mary Dillon,Ulta Beauty,2014,2013-07-01,ULTA

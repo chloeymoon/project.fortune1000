@@ -14,6 +14,7 @@ library(wesanderson)
 #data
 setwd("~/Documents/NYCDSA")
 d <- read.csv('./project.fortune1000/f1000.csv', stringsAsFactors=FALSE) #encoding="UTF-8",
+female <- read.csv('./project.fortune1000/Female_2018_Fortune500.csv', stringsAsFactors=FALSE)
 
 #what to display
 d.utf8 <- read.csv('./project.fortune1000/f1000.csv', encoding="UTF-8", stringsAsFactors=FALSE)
@@ -28,10 +29,17 @@ d$Profits...M. <- as.numeric(gsub('[$,]', '', d$Profits...M.))
 
 #dropdowns
 sectors <- levels(d$Sector)
+states.unique <- unique(d$State)
 
 #data after omitting CEO.gender==NAs 
 wo.na <- d[!is.na(d$CEO.gender),]
 
+# state descending order
+wo.na %>%
+  group_by(State) %>% 
+  count(State) %>%
+  arrange(n) -> o
+stateorder = o$State
 
 #sector descending order
 wo.na %>%
@@ -87,41 +95,3 @@ stock.plot <- function(input,date,log){
 # facts data
 ceo.trend <- read.csv('./project.fortune1000/women_ceos_fortune_500_2018.csv')
 board.trend <- read.csv("./project.fortune1000/women_board_members_f500_2018.csv")
-
-
-tags$daterange <- HTML('
-<head>
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
-<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
-<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
-  <meta charset="utf-8">
-  <title>JS Bin</title>
-</head>
-<body>
-  <h3>Range</h3>
-    <div class="ui form">
-    <div class="two fields">
-    <div class="field">
-    <label>Start date</label>
-    <div class="ui calendar" id="rangestart">
-    <div class="ui input left icon">
-    <i class="calendar icon"></i>
-    <input type="text" placeholder="Start">
-    </div>
-    </div>
-    </div>
-    <div class="field">
-    <label>End date</label>
-    <div class="ui calendar" id="rangeend">
-    <div class="ui input left icon">
-    <i class="calendar icon"></i>
-    <input type="text" placeholder="End">
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </body>'
-)
-

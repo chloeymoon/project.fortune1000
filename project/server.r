@@ -55,10 +55,6 @@ shinyServer(function(input, output){
   })
 
   
-  # output$sector.pie <- plot_ly() %>%
-  #   add_pie(data = d.bysector, labels = ~cut, values = ~n,
-  #           name = "Cut", domain = list(x = c(0, 0.4), y = c(0.4, 1)))
-  
   output$pie.sector <- renderPlot(
     if(input$sec!='All Sectors'){
       count.bygender() %>% 
@@ -142,7 +138,9 @@ shinyServer(function(input, output){
                        #fillColor=~(as.factor(d$CEO.gender)),
                        color=~(colorFactor(wes_palette("Cavalcanti1")[1:2], domain = c("male", "female")))(CEO.gender),
                        stroke=FALSE, 
-                       label=lapply(title.ceo,HTML)) 
+                       label=lapply(title.ceo,HTML)) %>%
+      leaflet::addLegend("bottomright", title="legend", opacity=1,
+                         labels= c("female","male"), colors=wes_palette("Cavalcanti1")[1:2])
   )
   
 
@@ -167,26 +165,86 @@ shinyServer(function(input, output){
                                            d[d$CEO.gender=='female',]$title,
                                            '</strong><br>CEO: ',
                                            d[d$CEO.gender=='female',]$CEO),
-                                    HTML))
-      # addLegend(pal = pal,
-      #           values = d.merged$total,
-      #           position = "bottomright",
-      #           title = "Count")
+                                    HTML)) %>%
+      leaflet::addLegend(pal = pal,
+                values = d.merged$total,
+                position = "bottomright",
+                title = "Count", opacity=1)
     )
   
+  ### 
+  d.bystate <- reactive({
+    d %>% filter(State==input$state&!is.na(State)) %>% group_by(CEO.gender)
+  })
+  
+  output$state.barchart <- renderPlot(
+    if(input$state=='All States'){
+      wo.na %>% 
+      ggplot(aes(x=State)) + 
+        geom_bar(aes(fill=CEO.gender)) + 
+        scale_x_discrete(limits = stateorder) +
+        scale_fill_manual("", values = wes_palette("Cavalcanti1")[3:4]) +
+        coord_flip() +
+        theme(axis.text.y=element_text(size=9),
+              axis.title.y=element_blank())
+    } else {
+      d.bystate() %>% 
+        count() %>%
+        ggplot(aes(x=CEO.gender,y=n,fill=CEO.gender)) + 
+        geom_col() + ylab("Count") + xlab("CEO Gender") + 
+        ggtitle(paste0("State: ",input$state)) +
+        scale_x_discrete(limits = c("female","male")) +
+        scale_fill_manual("", values = wes_palette("Cavalcanti1")[3:4]) +
+        theme(plot.title = element_text(size=16,face = "bold"), 
+              axis.text.x=element_text(size=12,face = "bold"))
+    }
+  )
+  
+  
+  # #### Observe event
+  # observeEvent(input$Map_shape_click, { # update the location selectInput on map clicks
+  #   p <- input$Map_shape_click
+  #   print(p)
+  # })
+  
+  state.prop <- reactive({
+    t <- d.bystate() %>% filter(!is.na(CEO.gender)) %>% count()
+    malecount = t$n[t$CEO.gender=='male']
+    fcount = ifelse(t$CEO.gender=='female',t$n[t$CEO.gender=='female'],0)
+    paste0(fcount,"/",(malecount+fcount))
+  })
+  
+  ######### Value Boxes by state
+  output$state.count <- renderValueBox(
+    if(input$state!='All States'){
+      valueBox(value=state.prop(), icon=icon('woman'),
+               subtitle='#female/#total',size="small",width=1)
+    }
+  )
+
+  
   # stock prices since they became CEOs
-  #overall
   output$stock <- renderPlot(
     stock.plot(input$selected.comp,input$stock.dates,input$log)
+  )
+  
+  joined <- reactive({
+    female <- female %>% select(ticker=Ticker,ceo.date=Date)
+    dat = left_join(d,female,by="ticker")
+  })
+  
+  comp.date <- reactive({
+    input.data <- joined()
+    input.data$ceo.date[input.data$title==input$selected.comp]
+  })
+  
+  output$fem.ceo.date <- renderText(
+    paste0("CEO: ", d$CEO[d$title==input$selected.comp]," since ",comp.date())
   )
   
   output$stock2 <- renderPlot(
     stock.plot(input$selected.comp2,input$stock.dates2,input$log2)
   )
-  
-  # wordcloud
-  
-  # Case studies (infoboxes) for those companies with female CEOs
   
   # data
   output$table <- renderDataTable({
