@@ -58,7 +58,6 @@ states <- states(cb=T)
 # for choropleth (by states)
 d.state <- d %>% group_by(State) %>% summarize(total=n())
 d.merged <- geo_join(states,d.state,"STUSPS","State")
-#genderpalette <- colorFactor(wes_palette("Cavalcanti1")[1:2], domain = c("male", "female"))
 pal <- colorNumeric("YlGnBu",domain=d.merged$total)
 qpal <- colorQuantile("YlGnBu",domain=d.merged$total)
 d.merged <- subset(d.merged, !is.na(total))
@@ -80,17 +79,6 @@ stock.plot <- function(input,date,log){
                      show.grid = FALSE,type="line", #get(symbol)
                      theme = chartTheme("white",up.col='navy'),name=symbol))
 }
-
-# namedStock <- function(name="Microsoft",
-#                        start=Sys.Date()-365,
-#                        end=Sys.Date()-1){
-#   ticker <- symbols[agrep(name,symbols[,2]),1]
-#   getSymbols(
-#     Symbols=ticker,
-#     src="yahoo",
-#     env=.GlobalEnv,
-#     from=start_date,to=end_date)
-# }
 
 # facts data
 ceo.trend <- read.csv('./project.fortune1000/women_ceos_fortune_500_2018.csv')

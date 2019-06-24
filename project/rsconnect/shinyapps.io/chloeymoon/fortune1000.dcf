@@ -1,0 +1,12 @@
+name: fortune1000
+title: fortune1000
+username:
+account: chloeymoon
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 995988
+bundleId: 2174942
+url: https://chloeymoon.shinyapps.io/fortune1000/
+when: 1561400237.05889
+asMultiple: FALSE
+asStatic: FALSE

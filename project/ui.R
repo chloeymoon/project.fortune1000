@@ -7,7 +7,6 @@ library(semantic.dashboard)
 shinyUI(dashboardPage(
   # theme: https://semantic-ui-forest.com/themes/
   # icons: https://semantic-ui.com/elements/icon.html
-  #theme = "lumen", #lumen, simplex, paper, flatly, sandstone
   # header
   dashboardHeader(
     title = "Fortune 1000 Companies with emphasis on Female CEOs"

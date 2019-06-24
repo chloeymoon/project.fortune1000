@@ -3,8 +3,6 @@ rm(list=ls())
 
 library(dplyr)
 
-#d <- getSymbols(c("AAPL","IBM"))
-
 # Getting Data
 setwd("~/Documents/NYCDSA/")
 f1000 <- read.csv('./shiny_project/fortune1000-final.csv')
@@ -62,17 +60,6 @@ f1000 <- f1000 %>% mutate(ticker=sapply(enc2utf8(as.character(title)),get.ticker
 # writing 
 setwd("~/Documents/NYCDSA/shiny_project")
 write.csv(f1000, file = "f1000.csv")
-
-####### MAPS
-# Comp name & ceo for popups in maps
-# FOR STATE
-# d.state <- d %>% group_by(State) %>% summarize(total=n())
-# d.merged <- geo_join(states,d.state,"STUSPS","State")
-# d.merged <- subset(d.merged, !is.na(total))
-# d.popup <- paste0("Total: ",as.character(d.merged$total))
-# palette <- colorNumeric("Greens",domain=d.merged$total)
-# 
-# title.ceo <- paste0(d$title,"\n","CEO: ",d$CEO)
 
 
 
