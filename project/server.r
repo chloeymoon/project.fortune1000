@@ -139,8 +139,8 @@ shinyServer(function(input, output){
                        color=~(colorFactor(wes_palette("Cavalcanti1")[1:2], domain = c("male", "female")))(CEO.gender),
                        stroke=FALSE, 
                        label=lapply(title.ceo,HTML)) %>%
-      leaflet::addLegend("bottomright", title="legend", opacity=1,
-                         labels= c("female","male"), colors=wes_palette("Cavalcanti1")[1:2])
+      leaflet::addLegend("bottomright", title="", opacity=1,
+                         labels= c("female CEOs","male CEOs"), colors=wes_palette("Cavalcanti1")[1:2])
   )
   
 
@@ -169,7 +169,7 @@ shinyServer(function(input, output){
       leaflet::addLegend(pal = pal,
                 values = d.merged$total,
                 position = "bottomright",
-                title = "Count", opacity=1)
+                title = "Count (All)", opacity=1)
     )
   
   ### 
@@ -217,7 +217,7 @@ shinyServer(function(input, output){
   ######### Value Boxes by state
   output$state.count <- renderValueBox(
     if(input$state!='All States'){
-      valueBox(value=state.prop(), icon=icon('woman'),
+      valueBox(value=state.prop(), 
                subtitle='#female/#total',size="small",width=1)
     }
   )

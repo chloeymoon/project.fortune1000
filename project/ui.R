@@ -20,7 +20,6 @@ shinyUI(dashboardPage(
       menuItem("Overview", tabName = "overview", icon = icon("angle down")),
       menuItem("Sector", tabName = "sector", icon = icon("industry")),
       menuItem("Location", tabName = "location", icon = icon("compass")),
-      menuItem("Financials", tabName = "financials", icon = icon("money")),
       menuItem("Stock", tabName = "stock", icon = icon("chart line")),
       menuItem("Conclusion", tabName = "conclusion", icon = icon("check")),
       menuItem("Data", tabName = "data", icon = icon("table"))
@@ -33,7 +32,10 @@ shinyUI(dashboardPage(
     tabItems(
       tabItem(tabName="overview",
               fluidRow(h2("Fortune 1000 Companies and Female CEOs")),
-              fluidRow(h4(" - Data: Kaggle Fortune 1000 companies, manual labor (CEO date)")),
+              br(),br(),br(),
+              fluidRow(HTML("Objectives: different types of visualizations")),
+              HTML("<p>&nbsp&nbsp&nbsp&nbspe.g. bar charts, maps, boxplots, pie charts, infoboxes, valueboxes, tabs, radio buttons, date range</p>"),
+              fluidRow(h4(" - Data: Kaggle Fortune 1000 (Title, Industry, Profit, Location..) + some manual labor (CEO date)")),
               fluidRow(h4(" - Gender: library(gender) based on first name")),
               fluidRow(h4(" - Location: Leaflet, markers & states (polygons)")),
               fluidRow(h4(" - Stock: quantmod, ticker matching (nasdaq.csv, stockSymbols() from stringr)")),
@@ -75,14 +77,6 @@ shinyUI(dashboardPage(
                 
               )
       ),
-      # tabItem(tabName="financials",
-      #         fluidRow(
-      #           radioButtons("radio", label = "",
-      #                        choices = list("Revenue" = "Revenues...M.", "Profit" = "Profits...M."), 
-      #                        selected = "Revenues...M."),
-      #           plotOutput('financials.box',width="70%")
-      #         )
-      # ),
 
       tabItem(tabName="stock",
               fluidRow(h2("Stock Prices Comparison")),
@@ -118,8 +112,11 @@ shinyUI(dashboardPage(
       ),
       
       tabItem(tabName="conclusion",
+              fluidRow(h2("Conclusion")),
               box(
-                fluidRow(h4("Profit and Revenue by CEO gender (%)")),
+                fluidRow(h4("Profit and Revenue by CEO gender")),
+                fluidRow(p("*Note: Outliers omitted for simplicity")),
+                br(),br(),
                 fluidRow(radioButtons("radio", label = "",
                                       choices = list("Revenue" = "Revenues...M.", "Profit" = "Profits...M."),
                                       selected = "Revenues...M.", inline=TRUE),width=16),
@@ -127,7 +124,8 @@ shinyUI(dashboardPage(
               ),
               box(
                 fluidRow(h4("Share of Female CEOs and Board Members (%)")),
-                fluidRow(plotOutput('trend',width="400px",height="250px"))
+                fluidRow(p("*Fortune 500 companies")),br(),
+                fluidRow(plotOutput('trend', height="400px"))
               )
       ),
       
