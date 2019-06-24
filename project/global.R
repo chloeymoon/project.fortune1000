@@ -12,12 +12,12 @@ par(mar=c(1,1,1,1))
 library(wesanderson)
 
 #data
-setwd("~/Documents/NYCDSA")
-d <- read.csv('./project.fortune1000/f1000.csv', stringsAsFactors=FALSE) #encoding="UTF-8",
-female <- read.csv('./project.fortune1000/Female_2018_Fortune500.csv', stringsAsFactors=FALSE)
+#setwd("~/Documents/NYCDSA")
+d <- read.csv('f1000.csv', stringsAsFactors=FALSE)
+female <- read.csv('Female_2018_Fortune500.csv', stringsAsFactors=FALSE)
 
 #what to display
-d.utf8 <- read.csv('./project.fortune1000/f1000.csv', encoding="UTF-8", stringsAsFactors=FALSE)
+d.utf8 <- read.csv('f1000.csv', encoding="UTF-8", stringsAsFactors=FALSE)
 disp = d.utf8 %>% select(rank, title, CEO, CEO.gender, Sector, Industry, City, State)
 
 #cleaning (revenue and profits as numeric)
@@ -81,5 +81,5 @@ stock.plot <- function(input,date,log){
 }
 
 # facts data
-ceo.trend <- read.csv('./project.fortune1000/women_ceos_fortune_500_2018.csv')
-board.trend <- read.csv("./project.fortune1000/women_board_members_f500_2018.csv")
+ceo.trend <- read.csv('women_ceos_fortune_500_2018.csv')
+board.trend <- read.csv("women_board_members_f500_2018.csv")

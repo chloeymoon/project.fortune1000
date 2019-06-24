@@ -83,7 +83,7 @@ shinyUI(dashboardPage(
                 column(7,
                        box(
                          title=NULL, 
-                         h4("Choose a company owned by a female CEO"),
+                         h4("Choose a company led by a female CEO"),
                          h4(textOutput('fem.ceo.date')),
                          selectizeInput(inputId="selected.comp",label=NULL,
                                         choices=fem.titles, selected = NULL, multiple = FALSE),

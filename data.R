@@ -4,17 +4,9 @@ rm(list=ls())
 library(dplyr)
 
 # Getting Data
-setwd("~/Documents/NYCDSA/")
-f1000 <- read.csv('./shiny_project/fortune1000-final.csv')
-#female <- read.csv('Female_2018_Fortune500.csv')
+f1000 <- read.csv('fortune1000-final.csv')
 
 # Cleaning: female names are without middle names, thus getting rid of middle names from the CEO's title
-
-# inner joining inner_join(x,y,by='name_common_col')
-#female.comps <- female %>% select(title=Company)
-#f <- inner_join(f500,female.comps)
-
-# another way to find female names is to use package "gender"
 #install.packages('gender')
 library(gender)
 f1000$CEO <- as.character(f1000$CEO)
@@ -58,7 +50,7 @@ get.ticker <- function(name){
 f1000 <- f1000 %>% mutate(ticker=sapply(enc2utf8(as.character(title)),get.ticker))
 
 # writing 
-setwd("~/Documents/NYCDSA/shiny_project")
+#setwd("~/Documents/NYCDSA/shiny_project")
 write.csv(f1000, file = "f1000.csv")
 
 

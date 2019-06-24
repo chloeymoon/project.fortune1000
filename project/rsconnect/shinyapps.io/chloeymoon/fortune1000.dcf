@@ -5,8 +5,8 @@ account: chloeymoon
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 995988
-bundleId: 2174942
+bundleId: 2175001
 url: https://chloeymoon.shinyapps.io/fortune1000/
-when: 1561400237.05889
+when: 1561401728.66197
 asMultiple: FALSE
 asStatic: FALSE
